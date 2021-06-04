@@ -14,13 +14,18 @@ function run (event) {
 
   axios.get('https://viacep.com.br/ws/'+ zipCode + '/json/')
   .then(function (response){
+    if (response.data.erro) {
+      throw new Error('CEP Inválido')
+    }
+
     content.innerHTML = ''
     createLine(response.data.logradouro)
     createLine(response.data.localidade + '/'+ response.data.uf)
     createLine(response.data.bairro)
   })
   .catch(function (error) {
-    console.log(error)
+    content.innerHTML = ''
+    createLine('Digite um CEP Válido')
   })
 }
 function createLine(text) {
